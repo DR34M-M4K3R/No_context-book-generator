@@ -2,6 +2,13 @@
 //import org.apache.pdfbox.pdmodel.PDPage;
 //import java.io.File;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,31 +24,31 @@ public class Main {
         String file = "";
         switch (word){
             case "cctemps":
-                file = "cctemps.txt";
+                file = "/cctemps.txt";
                 break;
 
             case "cclieu":
-                file = "cclieu.txt";
+                file = "/cclieu.txt";
                 break;
 
             case "nom":
                 if (Math.random()*2==1) {
-                    file = "noms_feminins.txt";
+                    file = "/noms_feminins.txt";
                 }else{
-                    file = "noms_masculins.txt";
+                    file = "/noms_masculins.txt";
                 }
                 break;
 
             case "verbe":
-                file = "verbes.txt";
+                file = "/verbes.txt";
                 break;
 
             case "transition": // alors, depuis, par la suite de...
-                file = "mots_de_transition.txt";
+                file = "/mots_de_transition.txt";
                 break;
 
             case "liaison": //avec, à, grâce à...
-                file = "mots_de_liaison.txt";
+                file = "/mots_de_liaison.txt";
                 break;
 
             default:
@@ -51,7 +58,7 @@ public class Main {
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = reader.readLine();
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         while (line != null) {
             lines.add(line);
             line = reader.readLine();
@@ -70,7 +77,7 @@ public class Main {
         //choix de la construction de la phrase:
         Random r2 = new Random();
         int caca = r.nextInt(4-1) + 1;
-       // caca = 3;
+        // caca = 3;
         String phrase = "";
         switch (caca) {          // liste des paramètres acceptés: verbe, cctemps, cclieu, transition, liaison, nom, personnage
             case 1:
@@ -83,7 +90,7 @@ public class Main {
                 phrase = getRandomWord("transition") + " il" + getRandomWord("verbe") + getRandomWord("liaison") + perso_principal;
                 break;
             case 4:
-               // phrase =
+                // phrase =
                 break;
             default:
 
@@ -181,20 +188,37 @@ public class Main {
 
 
 
-        System.out.print(getRandomSentence());
+        StringBuilder content = new StringBuilder();
+        for (int i = 0; i<20;i++) {
+            for (int ii = 0; ii < 20; ii++) {
+                content.append(getRandomSentence());
+            }
+            content.append("\n\n");
+        }
 
 
 
+        PDDocument doc = new PDDocument();
+        try {
+            PDPage page = new PDPage();
+            doc.addPage(page);
 
+            PDFont font = new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN);
 
+            PDPageContentStream contents = new PDPageContentStream(doc, page);
+            contents.beginText();
+            contents.setFont(font, 30);
+            contents.newLineAtOffset(50, 700);
+            contents.showText(String.valueOf(content));
+            contents.endText();
+            contents.close();
 
-/*
-        PDDocument document = new PDDocument();
-        PDPage my_page = new PDPage();
-        document.addPage(my_page);
-        document.save("Test.pdf");
-        document.close();
-*/
+            doc.save("Story.pdf");
+        }
+        finally {
+            doc.close();
+        }
+
 
 
 
