@@ -2,6 +2,7 @@
 //import org.apache.pdfbox.pdmodel.PDPage;
 //import java.io.File;
 
+import com.sun.rowset.internal.Row;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -16,6 +17,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class Main {
+
+    public static final String SOURCE_FILE = "Tests.txt";
+    public static final String CREATED_PDF = "Content.pdf";
+    static double currentHeight = 0;
+    static PDPageContentStream cs = null;
 
 
     public static String getRandomWord(String word) throws IOException {
@@ -194,77 +200,117 @@ public class Main {
         }
 
 
-        PDDocument doc = null;
-        try
-        {
-            doc = new PDDocument();
-            PDPage page = new PDPage();
-            doc.addPage(page);
-            PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-            PDFont pdfFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-            float fontSize = 12;
-            float leading = 1.5f * fontSize;
 
-            PDRectangle mediabox = page.getMediaBox();
-            float margin = 72;
-            float width = mediabox.getWidth() - 2*margin;
-            float startX = mediabox.getLowerLeftX() + margin;
-            float startY = mediabox.getUpperRightY() - margin;
 
-            String text = String.valueOf(content);
+
+
+
+
+
+            try {
+                PDDocument pdfDoc = new PDDocument();
+                // for text file
+                InputStream is = Main.class.getResourceAsStream(SOURCE_FILE);
+                BufferedInputStream reader = new BufferedInputStream(is);
+                BufferedReader br = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
+                PDPage page = new PDPage();
+                // add page to the PDF document
+                pdfDoc.addPage(page);
+                String line;
+                cs = new PDPageContentStream(pdfDoc, page);
+                cs.beginText();
+                cs.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
+                cs.newLineAtOffset(20, 750);
+                cs.setLeading(12);
+                // Read text file line by line
+                while ((line = br.readLine()) != null) {
+                    System.out.println("Line-- " + line);
+                    showMultiLineText(pdfDoc, line, 20, 750, 580, 820, page, new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 15);
+                }
+                if(cs != null) {
+                    cs.endText();
+                    cs.close();
+                }
+                pdfDoc.save(CREATED_PDF);
+                br.close();
+                pdfDoc.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         *
+         * @param pdfDoc
+         * @param text
+         * @param x
+         * @param y
+         * @param allowedWidth - allowed width for the line before content goes to next line
+         * @param allowedHeight - Allowed height for the page before another page is added
+         * @param page
+         * @param font
+         * @param fontSize
+         * @throws IOException
+         */
+        private static void showMultiLineText(PDDocument pdfDoc, String text, int x, int y, int allowedWidth, double allowedHeight, PDPage page, PDFont font, int fontSize) throws IOException {
             List<String> lines = new ArrayList<String>();
-            int lastSpace = -1;
-            while (text.length() > 0)
-            {
-                int spaceIndex = text.indexOf(' ', lastSpace + 1);
-                if (spaceIndex < 0)
-                    spaceIndex = text.length();
-                String subString = text.substring(0, spaceIndex);
-                float size = fontSize * pdfFont.getStringWidth(subString) / 1000;
-                System.out.printf("'%s' - %f of %f\n", subString, size, width);
-                if (size > width)
-                {
-                    if (lastSpace < 0)
-                        lastSpace = spaceIndex;
-                    subString = text.substring(0, lastSpace);
-                    lines.add(subString);
-                    text = text.substring(lastSpace).trim();
-                    System.out.printf("'%s' is line\n", subString);
-                    lastSpace = -1;
+            String line = "";
+            // split the text on spaces
+            String[] words = text.split(" ");
+            for(String word : words) {
+                if(!line.isEmpty()) {
+                    line += " ";
                 }
-                else if (spaceIndex == text.length())
-                {
-                    lines.add(text);
-                    System.out.printf("'%s' is line\n", text);
-                    text = "";
+                // check if adding the word to the line surpasses the width of the page
+                int size = (int) (fontSize * font.getStringWidth(line + word) / 1000);
+                if(size > allowedWidth) {
+                    // if line + word surpasses the width of the page, add the line without the current word
+                    lines.add(line);
+                    // start new line with the current word
+                    line = word;
+                } else {
+                    // if line + word fits the page width, add the current word to the line
+                    line += word;
                 }
-                else
-                {
-                    lastSpace = spaceIndex;
+            }
+            lines.add(line);
+
+            for(String ln : lines) {
+                System.out.println("Line- " + ln);
+                // for each line add line height to current height
+                // line height = 1.2 * fontSize is taken here
+                currentHeight = currentHeight + 1.2 * fontSize;
+                System.out.println("currentHeight " + currentHeight);
+
+                if(currentHeight >= allowedHeight) {
+                    System.out.println("adding new page " + currentHeight);
+                    // When current height is more than allowed height for the page
+                    // create a new page
+                    page = new PDPage();
+                    // add page to the PDF document
+                    pdfDoc.addPage(page);
+                    // reset currentHeight
+                    currentHeight = 0;
+                    cs.endText();
+                    cs.close();
+                    cs = new PDPageContentStream(pdfDoc, page);
+                    cs.beginText();
+                    cs.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
+                    cs.newLineAtOffset(20, 750);
+                    cs.setLeading(12);
                 }
+                cs.showText(ln);
+                cs.newLine();
             }
 
-            contentStream.beginText();
-            contentStream.setFont(pdfFont, fontSize);
-            contentStream.newLineAtOffset(startX, startY);
-            for (String line: lines)
-            {
-                contentStream.showText(line);
-                contentStream.newLineAtOffset(0, -leading);
-            }
-            contentStream.endText();
-            contentStream.close();
 
-            doc.save(new File("break-long-string.pdf"));
-        }
-        finally
-        {
-            if (doc != null)
-            {
-                doc.close();
-            }
-        }
+
+
+
+
+
 
 
 
