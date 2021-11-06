@@ -17,3 +17,6 @@ ni
 car
 parce que
 puisque
+dès lors que
+quand
+maitenant

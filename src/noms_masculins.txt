@@ -147,6 +147,10 @@ un sentiment
 un service
 un siècle
 un signe
+un yoyo
+un manouche
+un clown
+un pipo
 un silence
 un soir
 un soldat
@@ -166,4 +170,15 @@ un ventre
 un verre
 un village
 un visage
+un koala
+un zizi
+un hibou
+un harpon
+un junior
+un collier
+un bracelet
+un gorille
+un bonobo
+un babouin
+un gitan
 un voyage
