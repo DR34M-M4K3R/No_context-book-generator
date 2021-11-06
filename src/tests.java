@@ -3,10 +3,8 @@ import java.util.Random;
 public class tests {
     public static void main(String[] args) {
 
-        for (int i = 0; i < 100; i ++) {
-            Random r = new Random();
-            int caca = r.nextInt(5 - 1) + 1;
-            System.out.println(caca);
-        }
+        String name  = "stackoverflow";
+        System.out.println(name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase());
     }
 }
+

@@ -24,12 +24,12 @@ public class Main {
                 file = "cclieu.txt";
                 break;
 
-            case "nomf":
-                file = "noms_feminins.txt";
-                break;
-
-            case "nomm":
-                file = "noms_masculins.txt";
+            case "nom":
+                if (Math.random()*2==1) {
+                    file = "noms_feminins.txt";
+                }else{
+                    file = "noms_masculins.txt";
+                }
                 break;
 
             case "verbe":
@@ -58,7 +58,7 @@ public class Main {
         }
         Random r = new Random();
 
-        return lines.get(r.nextInt(lines.size()));
+        return lines.get(r.nextInt(lines.size())) + " ";
     }
 
 
@@ -70,13 +70,13 @@ public class Main {
         //choix de la construction de la phrase:
         Random r2 = new Random();
         int caca = r.nextInt(5-1) + 1;;
-        caca = 1;
-        switch (caca) {          // liste des paramètres acceptés: verbe, cctemps, cclieu, transition, liaison, nomf, nomm, personnage,
+        caca = 2;
+        switch (caca) {          // liste des paramètres acceptés: verbe, cctemps, cclieu, transition, liaison, nom, personnage
             case 1:
-                return getRandomWord("cctemps") + ", " + getRandomWord("cclieu") + ", " + perso_principal + " " + getRandomWord("verbe") + " " + getRandomWord("nomm") + " " + getRandomWord("liaison") + " " + personnage + ".";
+                return getRandomWord("cctemps") + "," + getRandomWord("cclieu") + "," + perso_principal + getRandomWord("verbe") + getRandomWord("nomm") + getRandomWord("liaison") + personnage + ".";
 
             case 2:
-
+                return getRandomWord("transition") + personnage + getRandomWord("verbe") + getRandomWord("liaison") + getRandomWord("nom") + getRandomWord("cclieu") + ".";
 
             case 3:
 

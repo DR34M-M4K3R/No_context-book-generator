@@ -1,109 +1,109 @@
-fois
-madame
-paix
-voix
-affaire
-année
-arme
-armée
-attention
-balle
-boîte
-bouche
-carte
-cause
-chambre
-chance
-chose
-classe
-confiance
-couleur
-cour
-cuisine
-dame
-dent
-droite
-école
-église
-envie
-épaule
-époque
-équipe
-erreur
-espèce
-face
-façon
-faim
-famille
-faute
-femme
-fenêtre
-fête
-fille
-fleur
-force
-forme
-guerre
-gueule
-habitude
-heure
-histoire
-idée
-image
-impression
-jambe
-joie
-journée
-langue
-lettre
-lèvre
-ligne
-lumière
-main
-maison
-maman
-manière
-marche
-merde
-mère
-minute
-musique
-nuit
-odeur
-oreille
-parole
-partie
-peau
-peine
-pensée
-personne
-peur
-photo
-pièce
-pierre
-place
-police
-porte
-présence
-prison
-putain
-question
-raison
-réponse
-robe
-route
-salle
-scène
-seconde
-sécurité
-semaine
-situation
-soeur
-soirée
-sorte
-suite
-table
-terre
-tête
-vérité
-ville
+une fois
+une madame
+une paix
+une voix
+une affaire
+une année
+une arme
+une armée
+une attention
+une balle
+une boîte
+une bouche
+une carte
+une cause
+une chambre
+une chance
+une chose
+une classe
+une confiance
+une couleur
+une cour
+une cuisine
+une dame
+une dent
+une droite
+une école
+une église
+une envie
+une épaule
+une époque
+une équipe
+une erreur
+une espèce
+une face
+une façon
+une faim
+une famille
+une faute
+une femme
+une fenêtre
+une fête
+une fille
+une fleur
+une force
+une forme
+une guerre
+une gueule
+une habitude
+une heure
+une histoire
+une idée
+une image
+une impression
+une jambe
+une joie
+une journée
+une langue
+une lettre
+une lèvre
+une ligne
+une lumière
+une main
+une maison
+une maman
+une manière
+une marche
+une merde
+une mère
+une minute
+une musique
+une nuit
+une odeur
+une oreille
+une parole
+une partie
+une peau
+une peine
+une pensée
+une personne
+une peur
+une photo
+une pièce
+une pierre
+une place
+une police
+une porte
+une présence
+une prison
+une putain
+une question
+une raison
+une réponse
+une robe
+une route
+une salle
+une scène
+une seconde
+une sécurité
+une semaine
+une situation
+une soeur
+une soirée
+une sorte
+une suite
+une table
+une terre
+une tête
+une vérité
+une ville
