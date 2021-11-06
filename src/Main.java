@@ -5,17 +5,15 @@
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class Main {
 
@@ -24,31 +22,31 @@ public class Main {
         String file = "";
         switch (word){
             case "cctemps":
-                file = "/cctemps.txt";
+                file = "cctemps.txt";
                 break;
 
             case "cclieu":
-                file = "/cclieu.txt";
+                file = "cclieu.txt";
                 break;
 
             case "nom":
                 if (Math.random()*2==1) {
-                    file = "/noms_feminins.txt";
+                    file = "noms_feminins.txt";
                 }else{
-                    file = "/noms_masculins.txt";
+                    file = "noms_masculins.txt";
                 }
                 break;
 
             case "verbe":
-                file = "/verbes.txt";
+                file = "verbes.txt";
                 break;
 
             case "transition": // alors, depuis, par la suite de...
-                file = "/mots_de_transition.txt";
+                file = "mots_de_transition.txt";
                 break;
 
             case "liaison": //avec, à, grâce à...
-                file = "/mots_de_liaison.txt";
+                file = "mots_de_liaison.txt";
                 break;
 
             default:
@@ -56,16 +54,15 @@ public class Main {
         }
 
 
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String line = reader.readLine();
-        ArrayList<String> lines = new ArrayList<>();
-        while (line != null) {
-            lines.add(line);
-            line = reader.readLine();
+        InputStream is = Main.class.getResourceAsStream(file);
+        BufferedInputStream reader = new BufferedInputStream(is);
+        BufferedReader r = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
+        ArrayList<String> lines = new ArrayList<String>();
+        while(r.readLine() != null) {
+            lines.add(r.readLine());
         }
-        Random r = new Random();
-
-        return  " " + lines.get(r.nextInt(lines.size()));
+        Random rand = new Random();
+        return " " + lines.get(rand.nextInt(lines.size()));
     }
 
 
@@ -193,30 +190,80 @@ public class Main {
             for (int ii = 0; ii < 20; ii++) {
                 content.append(getRandomSentence());
             }
-            content.append("\n\n");
+            //content.append("\r\r");
         }
 
 
-
-        PDDocument doc = new PDDocument();
-        try {
+        PDDocument doc = null;
+        try
+        {
+            doc = new PDDocument();
             PDPage page = new PDPage();
             doc.addPage(page);
+            PDPageContentStream contentStream = new PDPageContentStream(doc, page);
 
-            PDFont font = new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN);
+            PDFont pdfFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
+            float fontSize = 12;
+            float leading = 1.5f * fontSize;
 
-            PDPageContentStream contents = new PDPageContentStream(doc, page);
-            contents.beginText();
-            contents.setFont(font, 30);
-            contents.newLineAtOffset(50, 700);
-            contents.showText(String.valueOf(content));
-            contents.endText();
-            contents.close();
+            PDRectangle mediabox = page.getMediaBox();
+            float margin = 72;
+            float width = mediabox.getWidth() - 2*margin;
+            float startX = mediabox.getLowerLeftX() + margin;
+            float startY = mediabox.getUpperRightY() - margin;
 
-            doc.save("Story.pdf");
+            String text = String.valueOf(content);
+            List<String> lines = new ArrayList<String>();
+            int lastSpace = -1;
+            while (text.length() > 0)
+            {
+                int spaceIndex = text.indexOf(' ', lastSpace + 1);
+                if (spaceIndex < 0)
+                    spaceIndex = text.length();
+                String subString = text.substring(0, spaceIndex);
+                float size = fontSize * pdfFont.getStringWidth(subString) / 1000;
+                System.out.printf("'%s' - %f of %f\n", subString, size, width);
+                if (size > width)
+                {
+                    if (lastSpace < 0)
+                        lastSpace = spaceIndex;
+                    subString = text.substring(0, lastSpace);
+                    lines.add(subString);
+                    text = text.substring(lastSpace).trim();
+                    System.out.printf("'%s' is line\n", subString);
+                    lastSpace = -1;
+                }
+                else if (spaceIndex == text.length())
+                {
+                    lines.add(text);
+                    System.out.printf("'%s' is line\n", text);
+                    text = "";
+                }
+                else
+                {
+                    lastSpace = spaceIndex;
+                }
+            }
+
+            contentStream.beginText();
+            contentStream.setFont(pdfFont, fontSize);
+            contentStream.newLineAtOffset(startX, startY);
+            for (String line: lines)
+            {
+                contentStream.showText(line);
+                contentStream.newLineAtOffset(0, -leading);
+            }
+            contentStream.endText();
+            contentStream.close();
+
+            doc.save(new File("break-long-string.pdf"));
         }
-        finally {
-            doc.close();
+        finally
+        {
+            if (doc != null)
+            {
+                doc.close();
+            }
         }
 
 
