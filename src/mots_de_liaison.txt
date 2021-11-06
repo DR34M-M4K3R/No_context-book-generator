@@ -10,13 +10,3 @@ par
 parmi
 dans
 sans
-selon
-
-or
-ni
-car
-parce que
-puisque
-dès lors que
-quand
-maitenant

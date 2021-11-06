@@ -58,36 +58,37 @@ public class Main {
         }
         Random r = new Random();
 
-        return lines.get(r.nextInt(lines.size())) + " ";
+        return  " " + lines.get(r.nextInt(lines.size()));
     }
 
 
 
     public static String getRandomSentence() throws IOException {
         Random r = new Random();
-        String personnage = perso_secondaires.get(r.nextInt(perso_secondaires.size())) + " ";
+        String personnage = " " + perso_secondaires.get(r.nextInt(perso_secondaires.size()));
 
         //choix de la construction de la phrase:
         Random r2 = new Random();
-        int caca = r.nextInt(5-1) + 1;;
-        caca = 1;
+        int caca = r.nextInt(4-1) + 1;
+       // caca = 3;
         String phrase = "";
         switch (caca) {          // liste des paramètres acceptés: verbe, cctemps, cclieu, transition, liaison, nom, personnage
             case 1:
                 phrase = getRandomWord("cctemps") + "," + getRandomWord("cclieu") + "," + perso_principal + getRandomWord("verbe") + getRandomWord("nom") + getRandomWord("liaison") + personnage;
                 break;
             case 2:
-                phrase = getRandomWord("transition") + personnage + getRandomWord("verbe") + getRandomWord("liaison")+getRandomWord("cclieu");
-
+                phrase = getRandomWord("transition") + personnage + getRandomWord("verbe") + getRandomWord("cclieu");
+                break;
             case 3:
-
+                phrase = getRandomWord("transition") + " il" + getRandomWord("verbe") + getRandomWord("liaison") + perso_principal;
+                break;
             case 4:
-
+               // phrase =
+                break;
             default:
 
         }
-
-        return phrase.substring(0,1).toUpperCase() + phrase.substring(1).toLowerCase()+".";
+        return phrase.substring(0,2).toUpperCase() + phrase.substring(2).toLowerCase()+".";
     }
 
 
@@ -133,7 +134,7 @@ public class Main {
         int tempint = 0;
 
         System.out.println("Entrez le nom du personnage principal:");
-        perso_principal = sc.nextLine();
+        perso_principal = " " + sc.nextLine();
         System.out.println("Voulez-vous ajouter le nom des personnages secondaires? (si \"non\", ils seront générés aléatoirement.)");
         tempstr = sc.nextLine();
         if (tempstr.equals("oui")) {
@@ -180,11 +181,6 @@ public class Main {
 
 
 
-        System.out.print(getRandomSentence());
-        System.out.print(getRandomSentence());
-        System.out.print(getRandomSentence());
-        System.out.print(getRandomSentence());
-        System.out.print(getRandomSentence());
         System.out.print(getRandomSentence());
 
 
