@@ -65,18 +65,19 @@ public class Main {
 
     public static String getRandomSentence() throws IOException {
         Random r = new Random();
-        String personnage = perso_secondaires.get(r.nextInt(perso_secondaires.size()));
+        String personnage = perso_secondaires.get(r.nextInt(perso_secondaires.size())) + " ";
 
         //choix de la construction de la phrase:
         Random r2 = new Random();
         int caca = r.nextInt(5-1) + 1;;
-        caca = 2;
+        caca = 1;
+        String phrase = "";
         switch (caca) {          // liste des paramètres acceptés: verbe, cctemps, cclieu, transition, liaison, nom, personnage
             case 1:
-                return getRandomWord("cctemps") + "," + getRandomWord("cclieu") + "," + perso_principal + getRandomWord("verbe") + getRandomWord("nomm") + getRandomWord("liaison") + personnage + ".";
-
+                phrase = getRandomWord("cctemps") + "," + getRandomWord("cclieu") + "," + perso_principal + getRandomWord("verbe") + getRandomWord("nom") + getRandomWord("liaison") + personnage;
+                break;
             case 2:
-                return getRandomWord("transition") + personnage + getRandomWord("verbe") + getRandomWord("liaison") + getRandomWord("nom") + getRandomWord("cclieu") + ".";
+                phrase = getRandomWord("transition") + personnage + getRandomWord("verbe") + getRandomWord("liaison")+getRandomWord("cclieu");
 
             case 3:
 
@@ -85,7 +86,8 @@ public class Main {
             default:
 
         }
-        return null;
+
+        return phrase.substring(0,1).toUpperCase() + phrase.substring(1).toLowerCase()+".";
     }
 
 
@@ -179,6 +181,12 @@ public class Main {
 
 
         System.out.print(getRandomSentence());
+        System.out.print(getRandomSentence());
+        System.out.print(getRandomSentence());
+        System.out.print(getRandomSentence());
+        System.out.print(getRandomSentence());
+        System.out.print(getRandomSentence());
+
 
 
 
