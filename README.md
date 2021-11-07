@@ -7,14 +7,14 @@
 
 # Générateur de livre sans contexte
 ### Un programme écrit en java qui génère des livres allant jusqu'à 8 000 000 de pages, dont "l'histoire" est dépourvue de sens et de contexte.
-
+[signaler un bug/laisser un commentaire](https://github.com/DR34M-M4K3R/No_context-book-generator/issues/new)
 <br/><br/>
 ## Table des matières:<br/>
-### 1. [Téléchargements](https://github.com/DR34M-M4K3R/Anti-AFK-kick-for-all-games/blob/main/README.md#t%C3%A9l%C3%A9chargements)<br/>
-### 2. [Pourquoi, pour qui?](https://github.com/DR34M-M4K3R/No_context-book-generator/blob/main/README.md#Pourquoi-pour-qui)<br/>
-### 3. [Comment lancer le logiciel ?](https://github.com/DR34M-M4K3R/No_context-book-generator/blob/main/README.md#lancer-le-logiciel)
+### 1. [Téléchargements](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#t%C3%A9l%C3%A9chargements)<br/>
+### 2. [Pourquoi, pour qui?](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#pourquoi-pour-qui)<br/>
+### 3. [Comment lancer le programme ?](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#lancer-le-programme)
 ### 4. [Comment utiliser le Générateur de Livre Sans Contexte ?](https://github.com/DR34M-M4K3R/No_context-book-generator/blob/main/README.md#comment-utiliser-le-programme)
-### 5. [Cas particuliers et erreurs internes](https://github.com/DR34M-M4K3R//blob/main/README.md#cas-particuliers-et-erreurs-internes)
+### 5. [Cas particuliers et erreurs internes](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#cas-particuliers-et-erreurs-internes)
 ### 6. [Discord](https://github.com/DR34M-M4K3R/#discord)
 
 
@@ -26,14 +26,13 @@ Télécharger java (vous acceptez les termes de la [license Oracle](https://www.
 [![hey](https://img.shields.io/badge/Download%20.jar-181717?style=for-the-badge&color=red&logo=java)](https://github.com/DR34M-M4K3R/No_context-book-generator/raw/main/bookGenerator.jar)
 
 
-## Pourquoi, pour qui?
-Ce générateur de livre sans contexte à été créé à des fins de tests, sur des programmes automatisés, mais aussi pour les curieux pour s'amuser. Si vous trouvez une utilité, [contactez-moi](aaaaaaaaaaaaaaaaaaaaaaaaaa.
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)</p>
+# Pourquoi, pour qui?
+Ce générateur de livre sans contexte à été créé à des fins de tests, sur des programmes automatisés, mais aussi pour les curieux pour s'amuser. Si vous trouvez une utilité, [contactez-moi](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#contact)</p>
 </p>
 
 <br/>
 
-## Lancer le logiciel
+# Lancer le programme
 
 ### Lancer le fichier .jar
 Pour lancer le fichier .jar, vous devez ouvrir un terminal et taper :
@@ -55,7 +54,7 @@ Entrez simplement ce que le programme vous demande de rentrer dans le terminal. 
 
 <br/><br/>
 
-pas encore reporté. [rapporter une erreur](WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW W W W W W W W WW  W W )
+Pas encore de bug signalé. [signaler un bug](https://github.com/DR34M-M4K3R/No_context-book-generator/issues/new)
 ## Contact
 <p align="center">
   <a href="https://discord.gg/FPhHhBG25d">
