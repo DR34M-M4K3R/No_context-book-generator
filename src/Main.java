@@ -1,12 +1,9 @@
-//import org.apache.pdfbox.pdmodel.PDDocument;
-//import org.apache.pdfbox.pdmodel.PDPage;
-//import java.io.File;
-
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.awt.*;
 import java.awt.Font;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -74,7 +71,6 @@ public class Main {
         //choix de la construction de la phrase:
         Random r2 = new Random();
         int caca = r.nextInt(4-1) + 1;
-        // caca = 3;
         String phrase = "";
         switch (caca) {          // liste des paramètres acceptés: verbe, cctemps, cclieu, transition, liaison, nom, personnage
             case 1:
@@ -86,9 +82,7 @@ public class Main {
             case 3:
                 phrase = getRandomWord("transition") + " il" + getRandomWord("verbe") + getRandomWord("liaison") + perso_principal;
                 break;
-            case 4:
-                // phrase =
-                break;
+
             default:
 
         }
@@ -107,19 +101,23 @@ public class Main {
     public static String nbpage = "Pas encore défini";
     public static String nbmot = "Pas encore défini";
     public static String tailleparag = "Pas encore défini";
+    public static String titre = "Pas encore défini";
 
     public static void afficherTableau(){
         System.out.println("\n\n"+
                 "\n-------------------------------|" + "-------------------------------|" +
                 "\nNom du personnage principal:   |" + perso_principal +
                 "\n-------------------------------|" + "-------------------------------|");
+        System.out.println(""+
+                "Titre                          |" + nbmot +
+                "\n-------------------------------|" + "---------------------------|");
 
-        System.out.print("Personnages secondaires:     |");
+        System.out.print("Personnages secondaires:       |");
 
         for (Object perso_secondaire : perso_secondaires) {
             System.out.print("\"" + perso_secondaire + "\", ");
         }
-        System.out.println("\n-------------------------------|" + "-------------------------------|");
+        System.out.println("\n-------------------------------|" + "-----------------------------|");
 
         System.out.println(""+
                 "Nombre de pages aproximatif    |" + nbpage +
@@ -129,7 +127,7 @@ public class Main {
                 "\n-------------------------------|" + "-----------------------------|");
         System.out.println(""+
                 "Nombre de lignes par paragraphe|" +
-                "\n aproximatif                   |" + tailleparag +
+                "\naproximatif                    |" + tailleparag +
                 "\n-------------------------------|" + "-----------------------------|\n");
 
     }
@@ -144,6 +142,8 @@ public class Main {
 
         System.out.println("Entrez le nom du personnage principal:");
         perso_principal = " " + sc.nextLine();
+        System.out.println("Entrez le titre du récit:");
+        titre = sc.nextLine();
         System.out.println("Voulez-vous ajouter le nom des personnages secondaires? (si \"non\", ils seront générés aléatoirement.)");
         tempstr = sc.nextLine();
         if (tempstr.equals("oui")) {
@@ -208,12 +208,14 @@ public class Main {
 
 
 
-
+        int nbparagraphe = Integer.parseInt(nbpage)*34/Integer.parseInt(tailleparag)+2;
+        System.out.println("nombre de paragraphes = " + nbparagraphe);
+        System.out.println("Génération du PDF en cours, veuillez patienter...");
 
         StringBuilder content = new StringBuilder();
         ArrayList<String> contentlist = new ArrayList<>();
 
-        for (int i = 0; i<10; i++) {
+        for (int i = 0; i<nbparagraphe; i++) {
             for (int ii = 0; ii <=Integer.parseInt(tailleparag); ii++) {
                 content.append(getRandomSentence());
             }
@@ -227,36 +229,42 @@ public class Main {
 
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("ITextTest.pdf"));
-
+        PdfHeader event = new PdfHeader();
+        writer.setPageEvent(event);
         document.open();
 
-        Paragraph paragraph1 = new Paragraph();
 
-        paragraph1.setSpacingBefore(100);
 
-        document.add(paragraph1);
+        Paragraph preface = new Paragraph("\n\n"+titre+"\n\n", FontFactory.getFont(FontFactory.TIMES_BOLD, 20, Font.CENTER_BASELINE, new CMYKColor(0, 0, 0, 255)));
+        preface.setAlignment(Element.ALIGN_CENTER);
+
+        document.add(preface);
+
 
         for (int i=0;i<contentlist.size();i++){
             document.add(new Paragraph(String.valueOf(contentlist.get(i)), FontFactory.getFont(FontFactory.TIMES, 14, Font.CENTER_BASELINE, new CMYKColor(0, 0, 0, 255))));
             document.add(new Paragraph("\n\n"));
 
         }
-
-        document.add(new Paragraph("salut"));
-        document.add(new Paragraph(String.valueOf(content), FontFactory.getFont(FontFactory.TIMES, 14, Font.CENTER_BASELINE, new CMYKColor(0, 0, 0, 255))));
         document.close();
 
+    }
 
+    public static class PdfHeader extends PdfPageEventHelper {
 
+        @Override
+        public void onEndPage(PdfWriter writer, Document document) {
+            try {
+                Rectangle pageSize = document.getPageSize();
+                ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(titre), pageSize.getLeft(275), pageSize.getTop(30), 0);
+                ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase(String.format("Page%s", String.valueOf(writer.getCurrentPageNumber()))),
+                        pageSize.getRight(30), pageSize.getTop(30), 0);
 
-
-
-
-
-
-
-
-
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
+
 }
