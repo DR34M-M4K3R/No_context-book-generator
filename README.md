@@ -22,7 +22,7 @@
 Télécharger java (vous acceptez les termes de la [license Oracle](https://www.oracle.com/downloads/licenses/javase-license1.html)): [Linux](https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245467_4d5417147a92418ea8b615e228bb6935), [Windows](https://javadl.oracle.com/webapps/download/AutoDL?BundleId=245448_4d5417147a92418ea8b615e228bb6935)
 
 
-[![hey](https://img.shields.io/badge/Download%20.jar-181717?style=for-the-badge&color=red&logo=java)](https://github.com/DR34M-M4K3R/No_context-book-generator/raw/main/bookGenerator.jar)
+[![hey](https://img.shields.io/badge/Download%20.jar-181717?style=for-the-badge&color=red&logo=java)](https://github.com/DR34M-M4K3R/No_context-book-generator/releases/download/1.0.0/bookGenerator.jar)
 
 
 # Pourquoi, pour qui?
