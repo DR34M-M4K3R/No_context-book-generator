@@ -228,7 +228,7 @@ public class Main {
 
 
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("ITextTest.pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("HistoireSansContexte.pdf"));
         PdfHeader event = new PdfHeader();
         writer.setPageEvent(event);
         document.open();
