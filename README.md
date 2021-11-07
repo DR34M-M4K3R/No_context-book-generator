@@ -5,10 +5,16 @@
    - Creator: DR34M-M4K3R#7751-->
    
 
+
+
+
 # Générateur de livre sans contexte
 ### Un programme écrit en java qui génère des livres allant jusqu'à 8 000 000 de pages, dont "l'histoire" est dépourvue de sens et de contexte.
 [signaler un bug/laisser un commentaire](https://github.com/DR34M-M4K3R/No_context-book-generator/issues/new)
-<br/><br/>
+
+![Screenshot_20211107_180408](https://user-images.githubusercontent.com/67145585/140654496-3feb2640-7fa9-4a8b-8a2a-dac40ef548de.png)
+
+<br/>![Screenshot_20211107_180214](https://user-images.githubusercontent.com/67145585/140654463-e6c3916a-74c7-486b-a626-c531bda5b566.png)<br/>
 ## Table des matières:<br/>
 ### 1. [Téléchargements](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#t%C3%A9l%C3%A9chargements)<br/>
 ### 2. [Pourquoi, pour qui?](https://github.com/DR34M-M4K3R/No_context-book-generator/tree/master#pourquoi-pour-qui)<br/>
