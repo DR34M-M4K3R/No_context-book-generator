@@ -1,3 +1,4 @@
+/*
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -49,7 +50,8 @@ public class tests {
         }
     }
 
-    /**
+    */
+/**
      *
      * @param pdfDoc
      * @param text
@@ -61,7 +63,8 @@ public class tests {
      * @param font
      * @param fontSize
      * @throws IOException
-     */
+     *//*
+
     private static void showMultiLineText(PDDocument pdfDoc, String text, int x, int y, int allowedWidth, double allowedHeight, PDPage page, PDFont font, int fontSize) throws IOException {
         List<String> lines = new ArrayList<String>();
         String line = "";
@@ -113,4 +116,4 @@ public class tests {
             cs.newLine();
         }
     }
-}
+}*/

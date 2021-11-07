@@ -2,26 +2,20 @@
 //import org.apache.pdfbox.pdmodel.PDPage;
 //import java.io.File;
 
-import com.sun.rowset.internal.Row;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import java.awt.*;
+import java.awt.Font;
 import java.io.*;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
-
-    public static final String SOURCE_FILE = "Tests.txt";
-    public static final String CREATED_PDF = "Content.pdf";
-    static double currentHeight = 0;
-    static PDPageContentStream cs = null;
 
 
     public static String getRandomWord(String word) throws IOException {
@@ -63,7 +57,7 @@ public class Main {
         InputStream is = Main.class.getResourceAsStream(file);
         BufferedInputStream reader = new BufferedInputStream(is);
         BufferedReader r = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         while(r.readLine() != null) {
             lines.add(r.readLine());
         }
@@ -112,33 +106,38 @@ public class Main {
     public static ArrayList<String> perso_secondaires = new ArrayList<String>();
     public static String nbpage = "Pas encore défini";
     public static String nbmot = "Pas encore défini";
+    public static String tailleparag = "Pas encore défini";
 
     public static void afficherTableau(){
         System.out.println("\n\n"+
-                "\n-----------------------------|" + "-----------------------------|" +
-                "\nNom du personnage principal: |" + perso_principal +
-                "\n-----------------------------|" + "-----------------------------|");
+                "\n-------------------------------|" + "-------------------------------|" +
+                "\nNom du personnage principal:   |" + perso_principal +
+                "\n-------------------------------|" + "-------------------------------|");
 
         System.out.print("Personnages secondaires:     |");
 
         for (Object perso_secondaire : perso_secondaires) {
             System.out.print("\"" + perso_secondaire + "\", ");
         }
-        System.out.println("\n-----------------------------|" + "-----------------------------|");
+        System.out.println("\n-------------------------------|" + "-------------------------------|");
 
         System.out.println(""+
-                "Nombre de pages aproximatif  |" + nbpage +
-                "\n-----------------------------|" + "-----------------------------|");
+                "Nombre de pages aproximatif    |" + nbpage +
+                "\n-------------------------------|" + "-----------------------------|");
         System.out.println(""+
-                "Nombre de mots  aproximatif  |" + nbmot +
-                "\n-----------------------------|" + "-----------------------------|\n");
+                "Nombre de mots  aproximatif    |" + nbmot +
+                "\n-------------------------------|" + "-----------------------------|");
+        System.out.println(""+
+                "Nombre de lignes par paragraphe|" +
+                "\n aproximatif                   |" + tailleparag +
+                "\n-------------------------------|" + "-----------------------------|\n");
 
     }
 
 
 
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException, DocumentException {
         Scanner sc = new Scanner(System.in);
         String tempstr;
         int tempint = 0;
@@ -189,121 +188,65 @@ public class Main {
             tempstr=sc.nextLine();
         }
 
+        while(true) {
+            try {
+                System.out.println("Entrez le nombre de ligne des paragraphes (aproximatif):");
+                tempint = sc.nextInt();
+                if (tempint>30 || tempint<0){
+                    System.out.println("ERREUR: Veuillez entrer un nombre compris entre 0 et 30");
+
+                }else{
+                    tailleparag = Integer.toString(tempint);
+                    afficherTableau();
+                    break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERREUR: Veuillez entrer un nombre compris entre 0 et 30");
+            }
+            tempstr=sc.nextLine();
+        }
+
+
+
 
 
         StringBuilder content = new StringBuilder();
-        for (int i = 0; i<20;i++) {
-            for (int ii = 0; ii < 20; ii++) {
+        ArrayList<String> contentlist = new ArrayList<>();
+
+        for (int i = 0; i<10; i++) {
+            for (int ii = 0; ii <=Integer.parseInt(tailleparag); ii++) {
                 content.append(getRandomSentence());
             }
-            //content.append("\r\r");
+            contentlist.add(i, String.valueOf(content));
+            content.delete(0, content.length());
         }
 
 
 
 
 
+        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("ITextTest.pdf"));
 
+        document.open();
 
+        Paragraph paragraph1 = new Paragraph();
 
+        paragraph1.setSpacingBefore(100);
 
+        document.add(paragraph1);
 
-            try {
-                PDDocument pdfDoc = new PDDocument();
-                // for text file
-                InputStream is = Main.class.getResourceAsStream(SOURCE_FILE);
-                BufferedInputStream reader = new BufferedInputStream(is);
-                BufferedReader br = new BufferedReader(new InputStreamReader(reader, StandardCharsets.UTF_8));
-                PDPage page = new PDPage();
-                // add page to the PDF document
-                pdfDoc.addPage(page);
-                String line;
-                cs = new PDPageContentStream(pdfDoc, page);
-                cs.beginText();
-                cs.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
-                cs.newLineAtOffset(20, 750);
-                cs.setLeading(12);
-                // Read text file line by line
-                while ((line = br.readLine()) != null) {
-                    System.out.println("Line-- " + line);
-                    showMultiLineText(pdfDoc, line, 20, 750, 580, 820, page, new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 15);
-                }
-                if(cs != null) {
-                    cs.endText();
-                    cs.close();
-                }
-                pdfDoc.save(CREATED_PDF);
-                br.close();
-                pdfDoc.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        for (int i=0;i<contentlist.size();i++){
+            document.add(new Paragraph(String.valueOf(contentlist.get(i)), FontFactory.getFont(FontFactory.TIMES, 14, Font.CENTER_BASELINE, new CMYKColor(0, 0, 0, 255))));
+            document.add(new Paragraph("\n\n"));
+
         }
 
-        /**
-         *
-         * @param pdfDoc
-         * @param text
-         * @param x
-         * @param y
-         * @param allowedWidth - allowed width for the line before content goes to next line
-         * @param allowedHeight - Allowed height for the page before another page is added
-         * @param page
-         * @param font
-         * @param fontSize
-         * @throws IOException
-         */
-        private static void showMultiLineText(PDDocument pdfDoc, String text, int x, int y, int allowedWidth, double allowedHeight, PDPage page, PDFont font, int fontSize) throws IOException {
-            List<String> lines = new ArrayList<String>();
-            String line = "";
-            // split the text on spaces
-            String[] words = text.split(" ");
-            for(String word : words) {
-                if(!line.isEmpty()) {
-                    line += " ";
-                }
-                // check if adding the word to the line surpasses the width of the page
-                int size = (int) (fontSize * font.getStringWidth(line + word) / 1000);
-                if(size > allowedWidth) {
-                    // if line + word surpasses the width of the page, add the line without the current word
-                    lines.add(line);
-                    // start new line with the current word
-                    line = word;
-                } else {
-                    // if line + word fits the page width, add the current word to the line
-                    line += word;
-                }
-            }
-            lines.add(line);
+        document.add(new Paragraph("salut"));
+        document.add(new Paragraph(String.valueOf(content), FontFactory.getFont(FontFactory.TIMES, 14, Font.CENTER_BASELINE, new CMYKColor(0, 0, 0, 255))));
+        document.close();
 
-            for(String ln : lines) {
-                System.out.println("Line- " + ln);
-                // for each line add line height to current height
-                // line height = 1.2 * fontSize is taken here
-                currentHeight = currentHeight + 1.2 * fontSize;
-                System.out.println("currentHeight " + currentHeight);
 
-                if(currentHeight >= allowedHeight) {
-                    System.out.println("adding new page " + currentHeight);
-                    // When current height is more than allowed height for the page
-                    // create a new page
-                    page = new PDPage();
-                    // add page to the PDF document
-                    pdfDoc.addPage(page);
-                    // reset currentHeight
-                    currentHeight = 0;
-                    cs.endText();
-                    cs.close();
-                    cs = new PDPageContentStream(pdfDoc, page);
-                    cs.beginText();
-                    cs.setFont(new PDType1Font(Standard14Fonts.FontName.TIMES_ROMAN), 12);
-                    cs.newLineAtOffset(20, 750);
-                    cs.setLeading(12);
-                }
-                cs.showText(ln);
-                cs.newLine();
-            }
 
 
 
